@@ -6,9 +6,9 @@
 //       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
 //         <div className="flex items-center justify-center">
           
-//           {/* ✅ Logo Image */}
+//      
 //           <img
-//             src="/Group.png" // 👉 তোমার image path (public folder)
+//             src="/Group.png"
 //             alt="Planetrrix Logo"
 //             className="h-8 md:h-10 object-contain"
 //           />

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Footer from "./Footer";
 import { Star } from "@/type";
 import { celestialBodies } from "@/data/data";
+import { PlanetNavButton } from "./PlanetNavButton";
 
 interface CelestialDisplayProps {
   selectedBody: string;
@@ -68,41 +69,8 @@ export default function CelestialDisplay({
     setTimeout(() => setDirection(null), 500);
   };
 
-  // Replace the NavButton component with this:
-  const PlanetNavButton = ({
-    direction,
-    planetId,
-    onClick,
-  }: {
-    direction: "left" | "right";
-    planetId: string;
-    onClick: () => void;
-  }) => {
-    const planet = celestialBodies.find((b) => b.id === planetId);
-    if (!planet) return null;
-
-    return (
-      <button
-        // initial={{ opacity: 0, x: direction === "left" ? -20 : 20 }}
-        // animate={{ opacity: 1, x: 0 }}
-        // whileHover={{ scale: 1.2 }}
-        // whileTap={{ scale: 0.95 }}
-        onClick={onClick}
-        className="absolute top-1/2 -translate-y-1/2 z-40 w-16 h-16 rounded-full ackdrop-blur-sm flex items-center justify-center cursor-pointer transition-all duration-200 p-2"
-        style={{ [direction === "left" ? "left" : "right"]: "20px" }}
-      >
-        <img
-          src={planet.image}
-          alt={planet.name}
-          className="w-full h-full object-contain"
-        />
-      </button>
-    );
-  };
-
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Background Image with Parallax Effect */}
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedBody}
@@ -115,12 +83,10 @@ export default function CelestialDisplay({
             backgroundImage: `url(${currentBody.backgroundImage || "/default-bg.jpg"})`,
           }}
         >
-          {/* Overlay Gradient for better text readability */}
           <div className="absolute inset-0" />
         </motion.div>
       </AnimatePresence>
 
-      {/* Stars Layer */}
       <div className="absolute inset-0 pointer-events-none">
         {isMounted &&
           stars.map((star) => (
@@ -141,17 +107,15 @@ export default function CelestialDisplay({
           ))}
       </div>
 
-      {/* Main Content Container */}
       <div className="relative z-20 h-full flex flex-col">
-        {/* Planets Orbital Display */}
         <div className="relative flex-1 min-h-0">
-          {/* Navigation Buttons */}
           <PlanetNavButton
             direction="left"
             planetId={
               celestialBodies[
-                (currentBodyIndex - 1 + celestialBodies.length) %
-                  celestialBodies.length
+                currentBodyIndex === 0
+                  ? celestialBodies.length - 1
+                  : currentBodyIndex - 1
               ].id
             }
             onClick={handlePrevious}
@@ -159,13 +123,15 @@ export default function CelestialDisplay({
           <PlanetNavButton
             direction="right"
             planetId={
-              celestialBodies[(currentBodyIndex + 1) % celestialBodies.length]
-                .id
+              celestialBodies[
+                currentBodyIndex === celestialBodies.length - 1
+                  ? 0
+                  : currentBodyIndex + 1
+              ].id
             }
             onClick={handleNext}
           />
 
-          {/* Central Planet Animation */}
           <motion.div
             key={selectedBody}
             initial={{ scale: 0, opacity: 0, rotate: -180 }}
@@ -179,7 +145,7 @@ export default function CelestialDisplay({
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30"
           >
             <motion.div
-              className="relative w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden shadow-2xl"
+              className="relative w-52 h-52 md:w-68 md:h-58 rounded-full overflow-hidden shadow-2xl"
               animate={{ rotate: 360 }}
               transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
             >
@@ -194,7 +160,6 @@ export default function CelestialDisplay({
             </motion.div>
           </motion.div>
 
-          {/* Other Planets (Orbiting) */}
           <AnimatePresence>
             {celestialBodies
               .filter((b) => b.id !== selectedBody)
@@ -226,7 +191,7 @@ export default function CelestialDisplay({
                       }}
                     />
                   </motion.div>
-                  {/* Planet Label */}
+
                   <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-white text-xs whitespace-nowrap bg-black/50 px-2 py-0.5 rounded-full backdrop-blur-sm">
                     {body.name}
                   </div>
@@ -246,7 +211,6 @@ export default function CelestialDisplay({
         </motion.div>
       </div>
 
-      {/* Decorative Elements - Orbital Rings */}
       <div className="absolute inset-0 pointer-events-none z-5">
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 rounded-full border border-white/10" />
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 rounded-full border border-white/5" />
