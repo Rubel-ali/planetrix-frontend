@@ -9,7 +9,7 @@ export const celestialBodies = [
     distance: 280,
     isSun: true,
     image: "/sun.png",
-    backgroundImage: "/sun-bg.jpg", // Add background image for each planet
+    backgroundImage: "/sun-bg.jpg",
     description:
       "The Sun is the star at the center of our Solar System. It is a nearly perfect sphere of hot plasma, radiating energy mainly as light and heat.",
     diameter: "1,392,684 km",
