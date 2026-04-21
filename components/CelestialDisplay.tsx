@@ -1,0 +1,257 @@
+"use client";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import Footer from "./Footer";
+import { Star } from "@/type";
+import { celestialBodies } from "@/data/data";
+
+interface CelestialDisplayProps {
+  selectedBody: string;
+  setSelectedBody: (body: string) => void;
+}
+
+export default function CelestialDisplay({
+  selectedBody,
+  setSelectedBody,
+}: CelestialDisplayProps) {
+  const [stars, setStars] = useState<Star[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+  const [direction, setDirection] = useState<"left" | "right" | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Get current body details
+  const currentBody =
+    celestialBodies.find((b) => b.id === selectedBody) || celestialBodies[0];
+  const currentBodyIndex = celestialBodies.findIndex(
+    (b) => b.id === selectedBody,
+  );
+
+  useEffect(() => {
+    const generatedStars: Star[] = Array.from({ length: 60 }).map((_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      duration: 2 + Math.random() * 5,
+      delay: Math.random() * 3,
+    }));
+    setStars(generatedStars);
+    setIsMounted(true);
+    setCurrentIndex(currentBodyIndex);
+  }, [currentBodyIndex]);
+
+  const getPositionStyle = (x: number, y: number) => ({
+    left: `calc(50% + ${x}%)`,
+    top: `calc(50% + ${y}%)`,
+    transform: "translate(-50%, -50%)",
+  });
+
+  const handlePrevious = () => {
+    const prevIndex =
+      currentBodyIndex === 0
+        ? celestialBodies.length - 1
+        : currentBodyIndex - 1;
+    setDirection("left");
+    setSelectedBody(celestialBodies[prevIndex].id);
+    setCurrentIndex(prevIndex);
+    setTimeout(() => setDirection(null), 500);
+  };
+
+  const handleNext = () => {
+    const nextIndex =
+      currentBodyIndex === celestialBodies.length - 1
+        ? 0
+        : currentBodyIndex + 1;
+    setDirection("right");
+    setSelectedBody(celestialBodies[nextIndex].id);
+    setCurrentIndex(nextIndex);
+    setTimeout(() => setDirection(null), 500);
+  };
+
+  // Replace the NavButton component with this:
+  const PlanetNavButton = ({
+    direction,
+    planetId,
+    onClick,
+  }: {
+    direction: "left" | "right";
+    planetId: string;
+    onClick: () => void;
+  }) => {
+    const planet = celestialBodies.find((b) => b.id === planetId);
+    if (!planet) return null;
+
+    return (
+      <button
+        // initial={{ opacity: 0, x: direction === "left" ? -20 : 20 }}
+        // animate={{ opacity: 1, x: 0 }}
+        // whileHover={{ scale: 1.2 }}
+        // whileTap={{ scale: 0.95 }}
+        onClick={onClick}
+        className="absolute top-1/2 -translate-y-1/2 z-40 w-16 h-16 rounded-full ackdrop-blur-sm flex items-center justify-center cursor-pointer transition-all duration-200 p-2"
+        style={{ [direction === "left" ? "left" : "right"]: "20px" }}
+      >
+        <img
+          src={planet.image}
+          alt={planet.name}
+          className="w-full h-full object-contain"
+        />
+      </button>
+    );
+  };
+
+  return (
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Background Image with Parallax Effect */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={selectedBody}
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url(${currentBody.backgroundImage || "/default-bg.jpg"})`,
+          }}
+        >
+          {/* Overlay Gradient for better text readability */}
+          <div className="absolute inset-0" />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Stars Layer */}
+      <div className="absolute inset-0 pointer-events-none">
+        {isMounted &&
+          stars.map((star) => (
+            <motion.div
+              key={`star-${star.id}`}
+              animate={{ opacity: [0.2, 0.8, 0.2] }}
+              transition={{
+                duration: star.duration,
+                repeat: Infinity,
+                delay: star.delay,
+              }}
+              className="absolute w-1 h-1 bg-white rounded-full"
+              style={{
+                left: `${star.left}%`,
+                top: `${star.top}%`,
+              }}
+            />
+          ))}
+      </div>
+
+      {/* Main Content Container */}
+      <div className="relative z-20 h-full flex flex-col">
+        {/* Planets Orbital Display */}
+        <div className="relative flex-1 min-h-0">
+          {/* Navigation Buttons */}
+          <PlanetNavButton
+            direction="left"
+            planetId={
+              celestialBodies[
+                (currentBodyIndex - 1 + celestialBodies.length) %
+                  celestialBodies.length
+              ].id
+            }
+            onClick={handlePrevious}
+          />
+          <PlanetNavButton
+            direction="right"
+            planetId={
+              celestialBodies[(currentBodyIndex + 1) % celestialBodies.length]
+                .id
+            }
+            onClick={handleNext}
+          />
+
+          {/* Central Planet Animation */}
+          <motion.div
+            key={selectedBody}
+            initial={{ scale: 0, opacity: 0, rotate: -180 }}
+            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+            transition={{
+              duration: 0.7,
+              type: "spring",
+              stiffness: 100,
+              damping: 15,
+            }}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30"
+          >
+            <motion.div
+              className="relative w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden shadow-2xl"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+            >
+              <img
+                src={currentBody.image}
+                alt={selectedBody}
+                className="absolute inset-0 w-full h-full object-contain"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "/fallback.png";
+                }}
+              />
+            </motion.div>
+          </motion.div>
+
+          {/* Other Planets (Orbiting) */}
+          <AnimatePresence>
+            {celestialBodies
+              .filter((b) => b.id !== selectedBody)
+              .map((body, index) => (
+                <motion.div
+                  key={body.id}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 + index * 0.02 }}
+                  style={getPositionStyle(body.x, body.y)}
+                  className="absolute cursor-pointer z-10"
+                  onClick={() => setSelectedBody(body.id)}
+                >
+                  <motion.div
+                    whileHover={{
+                      scale: 1.3,
+                      boxShadow: "0 0 20px rgba(255,255,255,0.5)",
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`${body.size} rounded-full overflow-hidden transition-all duration-300`}
+                  >
+                    <img
+                      src={body.image}
+                      alt={body.name}
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/fallback.png";
+                      }}
+                    />
+                  </motion.div>
+                  {/* Planet Label */}
+                  <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-white text-xs whitespace-nowrap bg-black/50 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                    {body.name}
+                  </div>
+                </motion.div>
+              ))}
+          </AnimatePresence>
+        </div>
+
+        <motion.div
+          key={`info-${selectedBody}`}
+          initial={{ y: 100, opacity: 1 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="relative z-50 border-t-2 backdrop-blur-sm border-white/10"
+        >
+          <Footer />
+        </motion.div>
+      </div>
+
+      {/* Decorative Elements - Orbital Rings */}
+      <div className="absolute inset-0 pointer-events-none z-5">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 rounded-full border border-white/10" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 rounded-full border border-white/5" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-250 h-250 rounded-full border border-white/5" />
+      </div>
+    </div>
+  );
+}
