@@ -145,7 +145,7 @@ export default function CelestialDisplay({
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30"
           >
             <motion.div
-              className="relative w-80 h-80 md:w-88 md:h-88 rounded-full overflow-hidden shadow-2xl"
+              className="relative w-80 h-80 md:w-64 md:h-64 rounded-full overflow-hidden shadow-2xl"
               animate={{ rotate: 360 }}
               transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
             >
