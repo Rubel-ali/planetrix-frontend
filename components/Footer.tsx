@@ -2,7 +2,7 @@
 
 export default function Footer() {
   return (
-    <footer className=" mt-0">
+    <footer className="mt-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-8">
           <div className="flex flex-col gap-4">
@@ -16,9 +16,8 @@ export default function Footer() {
               </div>
             </div>
 
-            <p className="text-xs text-muted-foreground leading-relaxed max-w-xs">
-              Lorem ipsum dolor sit amet consectetur. Foiset dui tincidunt
-              pharetra sed arcu sed commodo.
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
+              PlanetTrix - Explore the Cosmos: Journey through our solar system and beyond, discovering the wonders of space one planet at a time.
             </p>
           </div>
 

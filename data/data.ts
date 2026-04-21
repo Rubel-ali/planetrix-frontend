@@ -273,3 +273,14 @@ export const celestialData = {
     color: "#4166f5",
   },
 };
+
+export const planets = [
+  { id: "mercury", name: "MERCURY" },
+  { id: "venus", name: "VENUS" },
+  { id: "earth", name: "EARTH" },
+  { id: "mars", name: "MARS" },
+  { id: "jupiter", name: "JUPITER" },
+  { id: "saturn", name: "SATURN" },
+  { id: "uranus", name: "URANUS" },
+  { id: "neptune", name: "NEPTUNE" },
+];
