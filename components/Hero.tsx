@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import CelestialDisplay from "./CelestialDisplay";
 import DataCard from "./DataCard";
@@ -15,6 +15,18 @@ export default function Hero({ selectedBody, setSelectedBody }: HeroProps) {
   const data =
     celestialData[selectedBody as keyof typeof celestialData] ||
     celestialData.sun;
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [selectedBody]);
 
   return (
     <main className="min-h-screen pb-0 flex items-center justify-center">
@@ -36,13 +48,18 @@ export default function Hero({ selectedBody, setSelectedBody }: HeroProps) {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-10 text-foreground">
+          <h2 className="text-5xl md:text-6xl font-bold mb-4 text-foreground">
             {data.name}
           </h2>
 
           <div className="flex flex-wrap gap-8 justify-center">
             {data.data.map((item, index) => (
-              <DataCard key={index} label={item.label} value={item.value} />
+              <DataCard
+                key={index}
+                label={item.label}
+                value={item.value}
+                isLoading={loading}
+              />
             ))}
           </div>
         </motion.div>

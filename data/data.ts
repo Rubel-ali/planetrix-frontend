@@ -8,7 +8,7 @@ export const celestialBodies = [
     y: 0,
     distance: 280,
     isSun: true,
-    image: "/sun.png",
+    image: "https://i.ibb.co.com/5ZZ1qJt/Sun.png",
     backgroundImage: "/sun-bg.jpg",
     description:
       "The Sun is the star at the center of our Solar System. It is a nearly perfect sphere of hot plasma, radiating energy mainly as light and heat.",
@@ -25,7 +25,7 @@ export const celestialBodies = [
     x: 55,
     y: 0,
     distance: 360,
-    image: "/mercury.png",
+    image: "https://i.ibb.co.com/5W3hwgWp/Mercury.png",
     backgroundImage: "/mercury-bg.jpg",
     description:
       "Mercury is the smallest and innermost planet in the Solar System, orbiting the Sun once every 88 Earth days.",
@@ -42,7 +42,7 @@ export const celestialBodies = [
     x: 35,
     y: 0,
     distance: 320,
-    image: "/venus.png",
+    image: "https://i.ibb.co.com/bMGjHZXK/Venus.png",
     backgroundImage: "/venus-bg.jpg",
     description:
       "Venus is the second planet from the Sun, named after the Roman goddess of love and beauty.",
@@ -59,7 +59,7 @@ export const celestialBodies = [
     x: -20,
     y: -35,
     distance: 240,
-    image: "/earth.png",
+    image: "https://i.ibb.co.com/KxhnBPNc/Earth.png",
     backgroundImage: "/earth-bg.jpg",
     description:
       "Earth is the third planet from the Sun and the only astronomical object known to harbor life.",
@@ -76,7 +76,7 @@ export const celestialBodies = [
     x: -35,
     y: 35,
     distance: 280,
-    image: "/neptune.png",
+    image: "https://i.ibb.co.com/j1SynGM/Neptune.png",
     backgroundImage: "/neptune-bg.jpg",
     description:
       "Neptune is the eighth and farthest known planet from the Sun, known for its deep blue color.",
@@ -93,7 +93,7 @@ export const celestialBodies = [
     x: 25,
     y: 45,
     distance: 260,
-    image: "/mars.png",
+    image: "https://i.ibb.co.com/d0pmqZK2/Mars.png",
     backgroundImage: "/mars-bg.jpg",
     description:
       'Mars is the fourth planet from the Sun, often called the "Red Planet" due to its reddish appearance.',
@@ -110,7 +110,7 @@ export const celestialBodies = [
     x: 20,
     y: -40,
     distance: 300,
-    image: "/jupiter.png",
+    image: "https://i.ibb.co.com/bgNR5cjf/Jupiter.png",
     backgroundImage: "/jupiter-bg.jpg",
     description:
       "Jupiter is the fifth planet from the Sun and the largest in the Solar System, a gas giant with a mass one-thousandth that of the Sun.",
@@ -127,7 +127,7 @@ export const celestialBodies = [
     x: -25,
     y: -50,
     distance: 340,
-    image: "/saturn.png",
+    image: "https://i.ibb.co.com/h145n6v4/Saturn.png",
     backgroundImage: "/saturn-bg.jpg",
     description:
       "Saturn is the sixth planet from the Sun, known for its prominent ring system made mostly of ice particles.",
@@ -144,7 +144,7 @@ export const celestialBodies = [
     x: 35,
     y: -30,
     distance: 360,
-    image: "/uranus.png",
+    image: "https://i.ibb.co.com/xKTsvjKP/Uranus.png",
     backgroundImage: "/uranus-bg.jpg",
     description:
       "Uranus is the seventh planet from the Sun, notable for its unique sideways rotation.",

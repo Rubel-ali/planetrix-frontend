@@ -17,7 +17,8 @@ export default function Footer() {
             </div>
 
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-              PlanetTrix - Explore the Cosmos: Journey through our solar system and beyond, discovering the wonders of space one planet at a time.
+              PlanetTrix - Explore the Cosmos: Journey through our solar system
+              and beyond, discovering the wonders of space one planet at a time.
             </p>
           </div>
 

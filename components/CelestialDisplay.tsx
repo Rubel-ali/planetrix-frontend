@@ -20,8 +20,14 @@ export default function CelestialDisplay({
   const [isMounted, setIsMounted] = useState(false);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  // Get current body details
+  useEffect(() => {
+    setLoading(true);
+    const t = setTimeout(() => setLoading(false), 600);
+    return () => clearTimeout(t);
+  }, [selectedBody]);
+
   const currentBody =
     celestialBodies.find((b) => b.id === selectedBody) || celestialBodies[0];
   const currentBodyIndex = celestialBodies.findIndex(
@@ -70,21 +76,23 @@ export default function CelestialDisplay({
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={selectedBody}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.8 }}
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url(${currentBody.backgroundImage || "/default-bg.jpg"})`,
-          }}
-        >
-          <div className="absolute inset-0" />
-        </motion.div>
+    <div className="relative w-full h-[85vh] md:h-screen overflow-hidden">
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-100 flex items-center justify-center backdrop-blur-sm"
+          >
+            <motion.div
+              className="w-8 h-8 md:w-10 md:h-10 border-2 border-white rounded-full"
+              style={{ borderTopColor: "transparent" }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            />
+          </motion.div>
+        )}
       </AnimatePresence>
 
       <div className="absolute inset-0 pointer-events-none">
@@ -98,7 +106,7 @@ export default function CelestialDisplay({
                 repeat: Infinity,
                 delay: star.delay,
               }}
-              className="absolute w-1 h-1 bg-white rounded-full"
+              className="absolute w-[1.5px] h-[1.5px] md:w-1 md:h-1 bg-white rounded-full"
               style={{
                 left: `${star.left}%`,
                 top: `${star.top}%`,
@@ -109,6 +117,7 @@ export default function CelestialDisplay({
 
       <div className="relative z-20 h-full flex flex-col">
         <div className="relative flex-1 min-h-0">
+          {/* Nav Buttons (touch friendly) */}
           <PlanetNavButton
             direction="left"
             planetId={
@@ -145,7 +154,14 @@ export default function CelestialDisplay({
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30"
           >
             <motion.div
-              className="relative w-80 h-80 md:w-64 md:h-64 rounded-full overflow-hidden shadow-2xl"
+              className="
+                relative 
+                w-40 h-40 
+                sm:w-52 sm:h-52 
+                md:w-64 md:h-64 
+                lg:w-80 lg:h-80 
+                rounded-full overflow-hidden shadow-2xl
+              "
               animate={{ rotate: 360 }}
               transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
             >
@@ -153,9 +169,6 @@ export default function CelestialDisplay({
                 src={currentBody.image}
                 alt={selectedBody}
                 className="absolute inset-0 w-full h-full object-contain"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "/fallback.png";
-                }}
               />
             </motion.div>
           </motion.div>
@@ -175,24 +188,18 @@ export default function CelestialDisplay({
                   onClick={() => setSelectedBody(body.id)}
                 >
                   <motion.div
-                    whileHover={{
-                      scale: 1.3,
-                      boxShadow: "0 0 20px rgba(255,255,255,0.5)",
-                    }}
+                    whileHover={{ scale: 1.2 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`${body.size} rounded-full overflow-hidden transition-all duration-300`}
+                    className={`${body.size} rounded-full overflow-hidden`}
                   >
                     <img
                       src={body.image}
                       alt={body.name}
                       className="w-full h-full object-contain"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "/fallback.png";
-                      }}
                     />
                   </motion.div>
 
-                  <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-white text-xs whitespace-nowrap bg-black/50 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                  <div className="absolute -bottom-5 md:-bottom-6 left-1/2 -translate-x-1/2 text-[10px] md:text-xs text-white bg-black/50 px-2 py-0.5 rounded-full">
                     {body.name}
                   </div>
                 </motion.div>
@@ -202,19 +209,19 @@ export default function CelestialDisplay({
 
         <motion.div
           key={`info-${selectedBody}`}
-          initial={{ y: 100, opacity: 1 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="relative z-50 border-t-2 backdrop-blur-sm border-white/10"
+          className="relative z-50 border-t backdrop-blur-sm border-white/10"
         >
           <Footer />
         </motion.div>
       </div>
 
       <div className="absolute inset-0 pointer-events-none z-5">
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 rounded-full border border-white/10" />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 rounded-full border border-white/5" />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-250 h-250 rounded-full border border-white/5" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-45 h-45 sm:w-55 sm:h-55 md:w-75 md:h-75 rounded-full border border-white/10" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-65 h-65 sm:w-[320px] sm:h-80 md:w-100 md:h-100 rounded-full border border-white/5" />
+        <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 rounded-full border border-white/5" />
       </div>
     </div>
   );
