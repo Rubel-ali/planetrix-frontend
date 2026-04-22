@@ -117,7 +117,6 @@ export default function CelestialDisplay({
 
       <div className="relative z-20 h-full flex flex-col">
         <div className="relative flex-1 min-h-0">
-          {/* Nav Buttons (touch friendly) */}
           <PlanetNavButton
             direction="left"
             planetId={

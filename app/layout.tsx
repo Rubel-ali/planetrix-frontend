@@ -9,7 +9,6 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'PlanetTrix - Explore the Cosmos',
   description: 'Discover and explore planets, stars, and celestial bodies in our interactive space explorer',
-  generator: 'v0.app',
   icons: {
     icon: [
       {
