@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import CelestialDisplay from "./CelestialDisplay";
 import DataCard from "./DataCard";
 import { celestialData } from "@/data/data";
@@ -29,30 +29,38 @@ export default function Hero({ selectedBody, setSelectedBody }: HeroProps) {
   }, [selectedBody]);
 
   return (
-    <main className="min-h-screen pb-0 flex items-center justify-center">
+    <main className="min-h-screen w-full flex flex-col items-center overflow-hidden">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-          <div className="flex items-center justify-center">
-            <img
-              src="/Group.png"
-              alt="Planetrrix Logo"
-              className="h-8 md:h-10 object-contain"
-            />
-          </div>
+
+        <div className="py-4 sm:py-5 flex justify-center">
+          <img src="/Group.png" className="h-8 sm:h-10" />
         </div>
 
-        <motion.div
-          key={`top-${selectedBody}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-5xl md:text-6xl font-bold mb-4 text-foreground">
-            {data.name}
-          </h2>
+        <div className="text-center mb-8 sm:mb-12 min-h-30 sm:min-h-35 md:min-h-40">
 
-          <div className="flex flex-wrap gap-8 justify-center">
+          <AnimatePresence mode="wait">
+            {loading ? (
+              <motion.div
+                key="title-skeleton"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="h-10 sm:h-14 md:h-16 w-40 sm:w-64 md:w-80 bg-white/10 rounded-lg mx-auto mb-6 animate-pulse"
+              />
+            ) : (
+              <motion.h2
+                key={selectedBody}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6"
+              >
+                {data.name}
+              </motion.h2>
+            )}
+          </AnimatePresence>
+
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8">
             {data.data.map((item, index) => (
               <DataCard
                 key={index}
@@ -62,14 +70,14 @@ export default function Hero({ selectedBody, setSelectedBody }: HeroProps) {
               />
             ))}
           </div>
-        </motion.div>
-
-        <div className="mb-0">
-          <CelestialDisplay
-            selectedBody={selectedBody}
-            setSelectedBody={setSelectedBody}
-          />
         </div>
+      </div>
+
+      <div className="w-full flex-1">
+        <CelestialDisplay
+          selectedBody={selectedBody}
+          setSelectedBody={setSelectedBody}
+        />
       </div>
     </main>
   );
