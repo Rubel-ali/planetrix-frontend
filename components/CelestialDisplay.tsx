@@ -78,7 +78,7 @@ export default function CelestialDisplay({
   };
 
   return (
-    <div className="relative w-full h-[85vh] md:h-screen">
+    <div className="relative w-full h-[85vh] md:h-screen overflow-hidden">
       <AnimatePresence>
         {loading && (
           <motion.div
