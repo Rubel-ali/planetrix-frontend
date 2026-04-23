@@ -226,10 +226,24 @@ export default function CelestialDisplay({
         </motion.div>
       </div>
 
-      <div className="absolute inset-0 pointer-events-none z-5">
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-45 h-45 sm:w-65 sm:h-65 md:w-85 md:h-85 rounded-full border border-white/10" />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-65 h-65 sm:w-90 sm:h-90 md:w-115 md:h-115 rounded-full border border-white/5" />
-        <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 rounded-full border border-white/5" />
+      <div className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
+        <div
+          className="absolute w-[40vw] h-[40vw] rounded-full border border-white/20 shadow[0_0_30px_rgba(255,255,255,0.08)]"
+        />
+
+        <div
+          className="absolute w-[55vw] h-[55vw] rounded-full border border-white/15"
+        />
+
+        <div
+          className="absolute w-[70vw] h-[70vw] rounded-full border border-white/10"
+        />
+
+        <div
+          className="absolute w-[85vw] h-[85vw] rounded-full border border-white/10"
+        />
+
+        <div className="absolute w-screen h-[100vw] rounded-full border border-white/5" />
       </div>
     </div>
   );
